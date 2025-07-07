@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kyc-service
+  labels:
+    app: kyc-service
+    service: kyc
+    country: georgia
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kyc-service
+  template:
+    metadata:
+      labels:
+        app: kyc-service
+        service: kyc
+        country: georgia
+    spec:
+      containers:
+        - name: kyc-service
+          image: ghcr.io/your-org/kyc-service:1.0.0-snapshot
+          ports:
+            - containerPort: 3000
+          env:
+            - name: PORT
+              value: "3000"
+            - name: DB_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: kyc-db-credentials
+                  key: host
+            - name: DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: kyc-db-credentials
+                  key: username
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: kyc-db-credentials
+                  key: password
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "50m"
+            limits:
+              memory: "128Mi"
+              cpu: "100m"

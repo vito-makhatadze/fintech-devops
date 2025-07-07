@@ -1,0 +1,23 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: kyc-dev
+resources:
+  - ../../base/kyc-service
+  - ../base/kyc-external-secret.yaml
+labels:
+  - pairs:
+      environment: dev
+      country: georgia
+    includeSelectors: true
+images:
+  - name: ghcr.io/your-org/kyc-service
+    newTag: "1.0.0-snapshot"
+configMapGenerator:
+  - name: kyc-config
+    literals:
+      - COUNTRY=georgia
+      - ENVIRONMENT=dev
+      - COMPLIANCE_MODE=NBG_TEST
+      - CURRENCY=GEL
+      - LANGUAGE=ka
+      - KYC_PROVIDER=GEORGIAN_IDENTITY_HOUSE_TEST
