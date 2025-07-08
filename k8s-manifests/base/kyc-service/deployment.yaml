@@ -18,6 +18,8 @@ spec:
         service: kyc
         country: georgia
     spec:
+      imagePullSecrets:
+        - name: ghcr-secret
       containers:
         - name: kyc-service
           image: ghcr.io/your-org/kyc-service:1.0.0-snapshot

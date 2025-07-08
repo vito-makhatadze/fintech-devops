@@ -1,29 +1,19 @@
-output "cluster_endpoint" {
-  description = "Endpoint for EKS control plane"
-  value       = module.eks.cluster_endpoint
+output "argocd_access" {
+  description = "Command to access ArgoCD locally"
+  value       = "kubectl port-forward svc/argocd-server -n argocd 8080:443"
 }
 
-output "cluster_name" {
-  description = "Kubernetes Cluster Name"
-  value       = module.eks.cluster_name
-}
-
-output "configure_kubectl" {
-  description = "Configure kubectl command"
-  value       = "aws eks --region ${var.aws_region} update-kubeconfig --name ${module.eks.cluster_name}"
-}
-
-output "argocd_server_url" {
-  description = "ArgoCD server URL"
-  value       = "kubectl get svc argocd-server -n argocd -o jsonpath='{.status.loadBalancer.ingress[0].hostname}'"
+output "vault_access" {
+  description = "Command to access Vault locally"
+  value       = "kubectl port-forward svc/vault -n vault 8200:8200"
 }
 
 output "argocd_admin_password" {
-  description = "ArgoCD admin password command"
+  description = "Command to get ArgoCD admin password"
   value       = "kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath='{.data.password}' | base64 -d"
 }
 
-output "vault_server_url" {
-  description = "Vault server URL"
-  value       = "kubectl get svc vault -n vault -o jsonpath='{.status.loadBalancer.ingress[0].hostname}'"
+output "kyc_service_status" {
+  description = "Command to check kyc-service pod status"
+  value       = "kubectl get pods -n ${var.namespace_kyc}"
 }

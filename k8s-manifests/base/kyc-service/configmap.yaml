@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kyc-config
+  namespace: kyc-dev
+data:
+  compliance_mode: NBG_TEST

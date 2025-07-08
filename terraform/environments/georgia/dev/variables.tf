@@ -1,17 +1,19 @@
-variable "aws_region" {
-  description = "AWS region"
+variable "namespace_kyc" {
+  description = "Namespace for kyc-dev"
   type        = string
-  default     = "eu-west-1"
+  default     = "kyc-dev"
 }
 
-variable "cluster_name" {
-  description = "EKS cluster name"
+variable "docker_username" {
+  description = "Docker registry username (e.g., for GHCR)"
   type        = string
-  default     = "georgia"
+  default     = "vito-makhatadze"  # Replace with your GHCR username
+  sensitive   = true
 }
 
-variable "environment" {
-  description = "Environment name"
+variable "docker_password" {
+  description = "Docker registry password (e.g., for GHCR)"
   type        = string
-  default     = "dev"
+  default     = "secret"  # Replace with your GHCR token or password
+  sensitive   = true
 }
